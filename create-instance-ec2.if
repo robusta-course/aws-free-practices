@@ -52,7 +52,7 @@ resource "aws_instance" "my_ec2_instance" {
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   
   #gan subnet
-   subnet_id = "subnet-04328ecc73b8cf351"
+   subnet_id = "subnet-04328ecc73b8cf351" # gan subnet can tao instance
 
   # Gán IP public
   associate_public_ip_address = true
