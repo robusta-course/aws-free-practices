@@ -12,9 +12,9 @@ provider "aws" {
   region = "ap-southeast-1" # region cần tạo resource ví dụ: "ap-southeast-1"
 }
 
-data "aws_caller_identity" "current" {}
+#data "aws_caller_identity" "current" {}
 
-data "aws_region" "current" {}
+#data "aws_region" "current" {}
 
 # Gan key pair để đăng nhập vào EC2
 resource "aws_key_pair" "my_key_pair" {
@@ -26,6 +26,7 @@ resource "aws_key_pair" "my_key_pair" {
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow SSH inbound traffic"
+  vpc_id = "vpc-09f999e828c3f3b6c" // thay vpc id can tao security group
 
   ingress {
     from_port   = 22
@@ -43,7 +44,7 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 # Tạo một EC2 instance với IP public
-resource "aws_instance" "my_ec2_instance" {
+resource "aws_instance" "my_ec2_instance_123" {
   ami           = "ami-047126e50991d067b" # ID ubuntu 24.04
   instance_type = "t2.micro"               # Miễn phí cho AWS Free Tier
   key_name      = aws_key_pair.my_key_pair.key_name
@@ -52,7 +53,7 @@ resource "aws_instance" "my_ec2_instance" {
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   
   #gan subnet
-   subnet_id = "subnet-04328ecc73b8cf351" # gan subnet can tao instance
+   subnet_id = "subnet-09fa2594a3727fc60" # thay subnet id can tao instance
 
   # Gán IP public
   associate_public_ip_address = true
@@ -64,9 +65,9 @@ resource "aws_instance" "my_ec2_instance" {
 
 # show IP public instance sau khi tao xong
 output "instance_public_ip" {
-  value = aws_instance.my_ec2_instance.public_ip
+  value = aws_instance.my_ec2_instance_123.public_ip
 }
 
 output "my_key_pair" {
-  value = aws_instance.my_ec2_instance.key_name
+  value = aws_instance.my_ec2_instance_123.key_name
 }
